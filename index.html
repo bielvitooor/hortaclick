@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HortaClick - Do produtor para a sua mesa</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* Reset e Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background-color: #f7fafc;
+        }
+
+        /* Header - Inspirado no app original */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #16a085;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #16a085, #2f855a);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: #16a085;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #16a085;
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #4a5568;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #16a085 0%, #2f855a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            animation: slideUp 1s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            animation: slideUp 1s ease-out 0.2s both;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            animation: slideUp 1s ease-out 0.4s both;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: white;
+            color: #16a085;
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            animation: slideUp 1s ease-out 0.6s both;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Seções */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #718096;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Cards inspirados no sistema */
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 2rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .impact-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .impact-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+            color: #16a085;
+        }
+
+        .impact-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        /* História - Timeline realista */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #16a085;
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 3rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            width: 45%;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            content: '';
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 15px solid transparent;
+            border-left-color: white;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::before {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 15px solid transparent;
+            border-right-color: white;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: #16a085;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            border: 4px solid white;
+            box-shadow: 0 0 0 4px rgba(22, 160, 133, 0.2);
+        }
+
+        .timeline-phase {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #16a085;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Como Funciona - Steps */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .step-card {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #16a085, #2f855a);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        /* Seções Para Produtores e Consumidores */
+        .dual-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin: 3rem 0;
+        }
+
+        .dual-card {
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .dual-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #2d3748;
+        }
+
+        .dual-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            color: #16a085;
+        }
+
+        .benefits-list {
+            list-style: none;
+            text-align: left;
+            margin: 1.5rem 0;
+        }
+
+        .benefits-list li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .benefits-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #16a085;
+            font-weight: bold;
+        }
+
+        /* Funcionalidades Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+            color: #16a085;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        /* Depoimentos */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .testimonial-card {
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .testimonial-quote {
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: #4a5568;
+            line-height: 1.8;
+        }
+
+        .testimonial-quote::before {
+            content: '"';
+            font-size: 3rem;
+            color: #16a085;
+            position: absolute;
+            top: 0;
+            left: 1rem;
+            line-height: 1;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .testimonial-role {
+            font-size: 0.9rem;
+            color: #718096;
+            margin-top: 0.25rem;
+        }
+
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #16a085, #2f855a);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        /* Regras */
+        .rules-grid {
+            display: grid;
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .rule-card {
+            padding: 1.5rem;
+            border-left: 4px solid #16a085;
+        }
+
+        .rule-number {
+            display: inline-block;
+            background: #16a085;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: 600;
+            margin-right: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .rule-title {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Formulário de Contato */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #16a085;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #16a085, #2f855a);
+            color: white;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(22, 160, 133, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            display: inline-block;
+            margin: 0 1rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            line-height: 1;
+        }
+
+        .social-links a:hover {
+            background: #16a085;
+            transform: translateY(-3px);
+        }
+
+        /* Animações */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Background Patterns */
+        .bg-pattern {
+            background-color: #f8fafc;
+        }
+
+        .bg-white {
+            background-color: white;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem 2rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                transform: translateY(-100%);
+                opacity: 0;
+                pointer-events: none;
+                transition: all 0.3s ease;
+            }
+
+            .nav-menu.active {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .section {
+                padding: 3rem 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .timeline::before {
+                left: 30px;
+            }
+
+            .timeline-item {
+                flex-direction: row !important;
+            }
+
+            .timeline-content {
+                width: calc(100% - 80px);
+                margin-left: 60px;
+            }
+
+            .timeline-content::before {
+                content: '';
+                position: absolute;
+                left: -15px !important;
+                right: auto !important;
+                top: 50%;
+                transform: translateY(-50%);
+                border: 15px solid transparent;
+                border-right-color: white !important;
+                border-left-color: transparent !important;
+            }
+
+            .timeline-dot {
+                left: 30px;
+                transform: translateX(-50%);
+            }
+
+            .dual-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="#inicio" class="logo">
+                <div class="logo-icon"><i class="fa fa-leaf"></i></div>
+                HortaClick
+            </a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#inicio">Início</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#historia">História</a></li>
+                <li><a href="#como-funciona">Como Funciona</a></li>
+                <li><a href="#produtores">Produtores</a></li>
+                <li><a href="#consumidores">Consumidores</a></li>
+                <li><a href="#funcionalidades">Funcionalidades</a></li>
+                <li><a href="#depoimentos">Depoimentos</a></li>
+                <li><a href="#regras">Regras</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+            <button class="menu-toggle" id="menuToggle" aria-label="Menu"><i class="fa fa-bars"></i></button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h1>HortaClick</h1>
+            <p class="hero-subtitle">Do produtor para a sua mesa</p>
+            <p class="hero-description">
+                A plataforma que conecta você diretamente aos produtores rurais da sua região. 
+                Alimentos frescos, saudáveis e com preço justo, entregues na sua casa.
+            </p>
+            <a href="#sobre" class="btn-primary">Conheça Nossa História</a>
+        </div>
+    </section>
+
+    <!-- Sobre -->
+    <section id="sobre" class="section bg-white">
+        <h2 class="section-title fade-in">Sobre o HortaClick</h2>
+        <p class="section-subtitle fade-in">
+            Mais que um aplicativo: uma ponte entre quem produz e quem consome
+        </p>
+        
+        <div class="about-grid fade-in">
+            <div class="card impact-card">
+                <i class="fa fa-globe impact-icon"></i>
+                <h3 class="impact-title">Impacto Ambiental</h3>
+                <p>Reduzimos o desperdício de alimentos conectando produtores diretamente aos consumidores, eliminando intermediários e promovendo consumo consciente.</p>
+            </div>
+            
+            <div class="card impact-card">
+                <i class="fa fa-heart impact-icon"></i>
+                <h3 class="impact-title">Impacto Social</h3>
+                <p>Fortalecemos a agricultura familiar, garantindo renda justa aos produtores e acesso a alimentos saudáveis para as famílias urbanas.</p>
+            </div>
+            
+            <div class="card impact-card">
+                <i class="fa fa-line-chart impact-icon"></i>
+                <h3 class="impact-title">Impacto Econômico</h3>
+                <p>Estimulamos a economia local, criamos novos canais de venda para produtores e oferecemos preços acessíveis aos consumidores.</p>
+            </div>
+        </div>
+        
+        <div class="card fade-in" style="margin-top: 2rem; padding: 2.5rem; text-align: center;">
+            <p style="font-size: 1.2rem; line-height: 1.8; color: #4a5568;">
+                O HortaClick é <strong>gerido por uma cooperativa de agricultura familiar</strong>, garantindo que todos os processos sejam organizados de forma justa e transparente. Nossa plataforma é <strong>escalável</strong>, podendo ser expandida para diferentes cidades e regiões, apoiando cada vez mais comunidades rurais em todo o país.
+            </p>
+        </div>
+    </section>
+
+    <!-- História -->
+    <section id="historia" class="section bg-pattern">
+        <h2 class="section-title fade-in">Nossa História</h2>
+        <p class="section-subtitle fade-in">
+            Nascemos da necessidade real de conectar produtores e consumidores
+        </p>
+        
+        <div class="timeline fade-in">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-phase">O Problema</div>
+                    <h3>Identificando a Necessidade</h3>
+                    <p>Pequenos produtores rurais enfrentavam dificuldades para vender produtos fora das feiras semanais. Consumidores urbanos, por sua vez, tinham dificuldade para encontrar alimentos frescos e acessíveis na correria do dia a dia.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-phase">A Pesquisa</div>
+                    <h3>Conversas Diretas</h3>
+                    <p>Realizamos conversas diretas com agricultores e consumidores, identificando problemas como: deslocamento custoso para feiras, perda de produtos por falta de venda, e dificuldade de acesso a alimentos frescos para famílias urbanas.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-phase">A Solução</div>
+                    <h3>Criação do HortaClick</h3>
+                    <p>Desenvolvemos uma plataforma que elimina barreiras, conectando produtores diretamente aos consumidores. Mais que um aplicativo, somos uma ponte que incentiva a economia local e a alimentação saudável.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-phase">A Cooperativa</div>
+                    <h3>Organização e Crescimento</h3>
+                    <p>Estruturamos uma cooperativa de agricultura familiar para gerenciar a plataforma, garantindo organização, qualidade e distribuição justa. O sistema foi projetado para ser escalável, expandindo para novas regiões.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Como Funciona -->
+    <section id="como-funciona" class="section bg-white">
+        <h2 class="section-title fade-in">Como Funciona</h2>
+        <p class="section-subtitle fade-in">
+            Simples, prático e seguro para todos
+        </p>
+        
+        <div class="steps-grid fade-in">
+            <div class="card step-card">
+                <div class="step-number">1</div>
+                <h3 class="step-title">Escolha os Produtos</h3>
+                <p>Navegue pelo catálogo e escolha produtos frescos diretamente dos produtores da sua região.</p>
+            </div>
+            
+            <div class="card step-card">
+                <div class="step-number">2</div>
+                <h3 class="step-title">Faça seu Pedido</h3>
+                <p>Adicione os produtos ao carrinho, informe seu endereço e confirme o pedido.</p>
+            </div>
+            
+            <div class="card step-card">
+                <div class="step-number">3</div>
+                <h3 class="step-title">Receba em Casa</h3>
+                <p>Receba seus produtos frescos diretamente na sua casa, com pagamento na entrega.</p>
+            </div>
+            
+            <div class="card step-card">
+                <div class="step-number">4</div>
+                <h3 class="step-title">Aproveite!</h3>
+                <p>Desfrute de alimentos frescos, saudáveis e apoie a agricultura familiar local.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Para Produtores e Consumidores -->
+    <section id="produtores" class="section bg-pattern">
+        <div class="dual-section fade-in">
+            <div class="card dual-card">
+                <i class="fa fa-user dual-icon"></i>
+                <h3>Para Produtores</h3>
+                <p>Cadastre-se na nossa cooperativa e amplie suas vendas além das feiras tradicionais.</p>
+                <ul class="benefits-list">
+                    <li>Cadastro simples e gratuito</li>
+                    <li>Gerencie produtos e estoque</li>
+                    <li>Receba pedidos automaticamente</li>
+                    <li>Preços justos sem intermediários</li>
+                    <li>Organize suas entregas</li>
+                    <li>Acompanhe suas vendas</li>
+                </ul>
+            </div>
+            
+            <div class="card dual-card" id="consumidores">
+                <i class="fa fa-home dual-icon"></i>
+                <h3>Para Consumidores</h3>
+                <p>Tenha acesso a produtos frescos e saudáveis diretamente dos produtores locais.</p>
+                <ul class="benefits-list">
+                    <li>Produtos frescos e saudáveis</li>
+                    <li>Preços acessíveis</li>
+                    <li>Entrega na sua casa</li>
+                    <li>Pagamento na entrega</li>
+                    <li>Origem conhecida dos alimentos</li>
+                    <li>Apoio à agricultura familiar</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Funcionalidades -->
+    <section id="funcionalidades" class="section bg-white">
+        <h2 class="section-title fade-in">Funcionalidades</h2>
+        <p class="section-subtitle fade-in">
+            Uma plataforma completa para produtores e consumidores
+        </p>
+        
+        <div class="features-grid fade-in">
+            <div class="card feature-card">
+                <i class="fa fa-mobile feature-icon"></i>
+                <h3 class="feature-title">Catálogo Inteligente</h3>
+                <p>Navegue por categorias organizadas com filtros avançados, busca por localização e informações detalhadas de cada produto.</p>
+            </div>
+            
+            <div class="card feature-card">
+                <i class="fa fa-shopping-cart feature-icon"></i>
+                <h3 class="feature-title">Carrinho Avançado</h3>
+                <p>Controle de quantidade em tempo real, verificação automática de estoque e cálculo inteligente de frete por região.</p>
+            </div>
+            
+            <div class="card feature-card">
+                <i class="fa fa-list-alt feature-icon"></i>
+                <h3 class="feature-title">Gestão de Pedidos</h3>
+                <p>Acompanhe seus pedidos em tempo real, histórico completo de compras e notificações de status de entrega.</p>
+            </div>
+            
+            <div class="card feature-card">
+                <i class="fa fa-cogs feature-icon"></i>
+                <h3 class="feature-title">Painel Administrativo</h3>
+                <p>Dashboard completo para produtores gerenciarem produtos, estoque, vendas e relatórios de desempenho.</p>
+            </div>
+            
+            <div class="card feature-card">
+                <i class="fa fa-search feature-icon"></i>
+                <h3 class="feature-title">Busca Inteligente</h3>
+                <p>Sistema de busca com filtros por categoria, preço, disponibilidade, produtor e proximidade geográfica.</p>
+            </div>
+            
+            <div class="card feature-card">
+                <i class="fa fa-camera feature-icon"></i>
+                <h3 class="feature-title">Galeria de Produtos</h3>
+                <p>Upload otimizado de imagens, galeria interativa e visualização em alta qualidade dos produtos.</p>
+            </div>
+            
+            <div class="card feature-card">
+                <i class="fa fa-bar-chart feature-icon"></i>
+                <h3 class="feature-title">Relatórios e Métricas</h3>
+                <p>Análise de vendas, produtos mais procurados, relatórios de entrega e métricas de satisfação.</p>
+            </div>
+            
+            <div class="card feature-card">
+                <i class="fa fa-credit-card feature-icon"></i>
+                <h3 class="feature-title">Pagamento Flexível</h3>
+                <p>Sistema seguro de pagamento na entrega, suporte a Pix, dinheiro e cartão, com controle de troco.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Depoimentos -->
+    <section id="depoimentos" class="section bg-pattern">
+        <h2 class="section-title fade-in">O que dizem sobre nós</h2>
+        <p class="section-subtitle fade-in">
+            Histórias reais de quem já faz parte da nossa comunidade
+        </p>
+        
+        <div class="testimonials-grid fade-in">
+            <div class="card testimonial-card">
+                <div class="testimonial-avatar">M</div>
+                <p class="testimonial-quote">
+                    Antes eu só conseguia vender na feira de sábado. Agora com o HortaClick, vendo todos os dias da semana. Minha renda aumentou muito e consigo planejar melhor o plantio.
+                </p>
+                <div class="testimonial-author">Maria das Hortaliças</div>
+                <div class="testimonial-role">Produtora Rural - Ceres/GO</div>
+            </div>
+            
+            <div class="card testimonial-card">
+                <div class="testimonial-avatar">J</div>
+                <p class="testimonial-quote">
+                    Como mãe que trabalha fora, o HortaClick me salvou! Consigo comprar verduras frescas sem sair de casa. Os produtos chegam no dia seguinte, sempre fresquinhos.
+                </p>
+                <div class="testimonial-author">Juliana Santos</div>
+                <div class="testimonial-role">Consumidora - Goiânia/GO</div>
+            </div>
+            
+            <div class="card testimonial-card">
+                <div class="testimonial-avatar">A</div>
+                <p class="testimonial-quote">
+                    Nossa cooperativa cresceu 300% desde que começamos a usar o HortaClick. Conseguimos organizar melhor as entregas e atender muito mais famílias.
+                </p>
+                <div class="testimonial-author">Antônio Ferreira</div>
+                <div class="testimonial-role">Coordenador da Cooperativa</div>
+            </div>
+            
+            <div class="card testimonial-card">
+                <div class="testimonial-avatar">C</div>
+                <p class="testimonial-quote">
+                    Os preços são justos e sei exatamente de onde vem minha comida. Além disso, estou ajudando famílias produtoras da minha região. É gratificante!
+                </p>
+                <div class="testimonial-author">Carlos Mendes</div>
+                <div class="testimonial-role">Consumidor - Anápolis/GO</div>
+            </div>
+            
+            <div class="card testimonial-card">
+                <div class="testimonial-avatar">R</div>
+                <p class="testimonial-quote">
+                    Meus tomates nunca mais ficaram perdidos na roça. O sistema me avisa quando alguém faz pedido e posso colher na hora certa. Desperdício zero!
+                </p>
+                <div class="testimonial-author">Rosa Oliveira</div>
+                <div class="testimonial-role">Produtora Rural - Ceres/GO</div>
+            </div>
+            
+            <div class="card testimonial-card">
+                <div class="testimonial-avatar">P</div>
+                <p class="testimonial-quote">
+                    Trabalho muito e não tinha tempo para ir à feira. Agora recebo produtos orgânicos em casa, pagando na entrega. Prático e seguro!
+                </p>
+                <div class="testimonial-author">Pedro Almeida</div>
+                <div class="testimonial-role">Consumidor - Goiânia/GO</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Regras de Uso -->
+    <section id="regras" class="section bg-white">
+        <h2 class="section-title fade-in">Regras de Uso</h2>
+        <p class="section-subtitle fade-in">
+            Como nossa plataforma funciona de forma segura e transparente
+        </p>
+        
+        <div class="rules-grid fade-in">
+            <div class="card rule-card">
+                <span class="rule-number">1</span>
+                <h4 class="rule-title">Pagamento Seguro na Entrega</h4>
+                <p>Todas as compras são pagas no momento da entrega, aceitando dinheiro, Pix ou cartão. Sem taxas antecipadas para o consumidor.</p>
+            </div>
+            
+            <div class="card rule-card">
+                <span class="rule-number">2</span>
+                <h4 class="rule-title">Produtos Certificados</h4>
+                <p>Todos os produtores são cadastrados e verificados pela cooperativa. Produtos com origem conhecida e qualidade garantida.</p>
+            </div>
+            
+            <div class="card rule-card">
+                <span class="rule-number">3</span>
+                <h4 class="rule-title">Entregas Programadas</h4>
+                <p>Entregas organizadas por rota e região, respeitando horários acordados entre produtor e consumidor.</p>
+            </div>
+            
+            <div class="card rule-card">
+                <span class="rule-number">4</span>
+                <h4 class="rule-title">Respeito à Sazonalidade</h4>
+                <p>Produtos disponíveis conforme época de cultivo, respeitando ciclos naturais e garantindo maior frescor.</p>
+            </div>
+            
+            <div class="card rule-card">
+                <span class="rule-number">5</span>
+                <h4 class="rule-title">Controle de Qualidade</h4>
+                <p>Sistema integrado que controla estoque em tempo real e garante que apenas produtos frescos sejam oferecidos.</p>
+            </div>
+            
+            <div class="card rule-card">
+                <span class="rule-number">6</span>
+                <h4 class="rule-title">Suporte Cooperativo</h4>
+                <p>Assistência técnica e suporte contínuo aos produtores para melhorar qualidade e produtividade.</p>
+            </div>
+            
+            <div class="card rule-card">
+                <span class="rule-number">7</span>
+                <h4 class="rule-title">Política de Troca</h4>
+                <p>Produtos com problemas podem ser trocados ou reembolsados, garantindo satisfação total do consumidor.</p>
+            </div>
+            
+            <div class="card rule-card">
+                <span class="rule-number">8</span>
+                <h4 class="rule-title">Transparência nos Preços</h4>
+                <p>Preços justos estabelecidos em conjunto com a cooperativa, sem taxas ocultas ou intermediários abusivos.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contato -->
+    <section id="contato" class="section bg-pattern">
+        <h2 class="section-title fade-in">Entre em Contato</h2>
+        <p class="section-subtitle fade-in">
+            Dúvidas, sugestões ou quer fazer parte da nossa cooperativa?
+        </p>
+        
+        <div class="card contact-form fade-in">
+            <form id="contactForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nome">Nome Completo</label>
+                        <input type="text" id="nome" name="nome" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="telefone">Telefone</label>
+                        <input type="tel" id="telefone" name="telefone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tipo">Você é</label>
+                        <select id="tipo" name="tipo" style="width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1rem;">
+                            <option value="">Selecione...</option>
+                            <option value="consumidor">Consumidor</option>
+                            <option value="produtor">Produtor Rural</option>
+                            <option value="cooperativa">Representante de Cooperativa</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="assunto">Assunto</label>
+                    <input type="text" id="assunto" name="assunto" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="mensagem">Mensagem</label>
+                    <textarea id="mensagem" name="mensagem" rows="5" required placeholder="Conte-nos como podemos ajudar você..."></textarea>
+                </div>
+                
+                <button type="submit" class="btn-submit">Enviar Mensagem</button>
+            </form>
+        </div>
+        
+        <div style="text-align: center; margin-top: 3rem;">
+            <p style="font-size: 1.1rem; margin-bottom: 1rem; color: #4a5568;">
+                <strong>Outras formas de contato:</strong>
+            </p>
+            <div class="social-links">
+                <a href="tel:+5562999999999" aria-label="WhatsApp" title="WhatsApp: (62) 99999-9999">📱</a>
+                <a href="mailto:contato@hortaclick.com.br" aria-label="Email" title="Email: contato@hortaclick.com.br">✉️</a>
+                <a href="#" aria-label="Instagram" title="Instagram: @hortaclick">📷</a>
+                <a href="#" aria-label="Facebook" title="Facebook: HortaClick">📘</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem; text-align: left;">
+                <div>
+                    <h4 style="color: #16a085; margin-bottom: 1rem; font-size: 1.2rem;">HortaClick</h4>
+                    <p style="line-height: 1.6; color: #a0aec0;">
+                        Conectando produtores e consumidores para uma alimentação mais saudável e uma economia local mais forte.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 style="color: #16a085; margin-bottom: 1rem; font-size: 1.2rem;">Links Úteis</h4>
+                    <ul style="list-style: none; line-height: 2;">
+                        <li><a href="#sobre" style="color: #a0aec0; text-decoration: none;">Sobre Nós</a></li>
+                        <li><a href="#como-funciona" style="color: #a0aec0; text-decoration: none;">Como Funciona</a></li>
+                        <li><a href="#produtores" style="color: #a0aec0; text-decoration: none;">Para Produtores</a></li>
+                        <li><a href="#consumidores" style="color: #a0aec0; text-decoration: none;">Para Consumidores</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 style="color: #16a085; margin-bottom: 1rem; font-size: 1.2rem;">Contato</h4>
+                    <ul style="list-style: none; line-height: 2; color: #a0aec0;">
+                        <li><i class="fa fa-phone" style="margin-right: 8px;"></i> (62) 99999-9999</li>
+                        <li><i class="fa fa-envelope" style="margin-right: 8px;"></i> contato@hortaclick.com.br</li>
+                        <li><i class="fa fa-map-marker" style="margin-right: 8px;"></i> Ceres - Goiás, Brasil</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; text-align: center;">
+                <p>&copy; 2024 HortaClick. Todos os direitos reservados.</p>
+                <p style="margin-top: 0.5rem; color: #a0aec0;">
+                    Desenvolvido com <i class="fa fa-heart" style="color: #16a085;"></i> para fortalecer a agricultura familiar brasileira
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerHeight = document.querySelector('.header').offsetHeight;
+                    const targetPosition = target.offsetTop - headerHeight;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header background change on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+
+        // Contact form submission
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Simulate form submission
+            const btn = e.target.querySelector('.btn-submit');
+            const originalText = btn.textContent;
+            
+            btn.textContent = 'Enviando...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
+                e.target.reset();
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }, 2000);
+        });
+
+        // Add stagger animation to feature cards
+        const featureCards = document.querySelectorAll('.feature-card');
+        featureCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+
+        // Add stagger animation to testimonial cards
+        const testimonialCards = document.querySelectorAll('.testimonial-card');
+        testimonialCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.15}s`;
+        });
+
+        // Add stagger animation to timeline items
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        timelineItems.forEach((item, index) => {
+            item.style.animationDelay = `${index * 0.2}s`;
+        });
+
+        // Add stagger animation to step cards
+        const stepCards = document.querySelectorAll('.step-card');
+        stepCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+
+        // Parallax effect for hero section (subtle)
+        let ticking = false;
+        
+        function updateParallax() {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            const rate = scrolled * -0.3;
+            
+            if (hero) {
+                hero.style.transform = `translateY(${rate}px)`;
+            }
+            
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateParallax);
+                ticking = true;
+            }
+        });
+
+        // Initialize animations on load
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+        });
+
+        // Add hover effects to cards
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-8px)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Smooth reveal animations for sections
+        const revealSections = document.querySelectorAll('.section');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        });
+
+        revealSections.forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(50px)';
+            section.style.transition = 'all 0.8s ease-out';
+            revealObserver.observe(section);
+        });
+    </script>
+</body>
+</html>
